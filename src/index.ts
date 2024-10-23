@@ -1,13 +1,15 @@
-import { initialize } from "./cluster.js"
-import fs from 'fs'
-import readline from 'readline'
-const ITEMS_PER_PAGE = 100
-const CLUSTER_SIZE = 99
-const TASK_FILE = new URL('./background-task.js').pathname
+import {createReadStream} from 'fs'
+import {createInterface} from 'readline'
+import { initialize } from './cluster'
+
+(async ()=>{
+  const ITEMS_PER_PAGE = 100
+  const CLUSTER_SIZE = 99
+  const TASK_FILE = __dirname + '/background-task'
 
     async function* getAllPagedData(itemsPerPage:number) {
-    const rl = readline.createInterface({
-      input: fs.createReadStream('.csv'),
+    const rl = createInterface({
+      input: createReadStream('.csv'),
       crlfDelay: Infinity,
     });
   
@@ -33,13 +35,13 @@ const TASK_FILE = new URL('./background-task.js').pathname
   }
 
 
-const cp = initialize(
-    {
-        backgroundTaskFile: TASK_FILE,
-        clusterSize: CLUSTER_SIZE,
-    }
-)
-
-for await (const data of getAllPagedData(ITEMS_PER_PAGE)) {
-    cp.sendToChild(data)
-}
+  const cp = initialize(
+      {
+          backgroundTaskFile: TASK_FILE,
+          clusterSize: CLUSTER_SIZE,
+      }
+  )
+  for await (const data of getAllPagedData(ITEMS_PER_PAGE)) {
+      cp.sendToChild(data)
+  }
+})()
