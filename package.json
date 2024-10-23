@@ -4,7 +4,6 @@
     "tsc-alias": "^1.8.10"
   },
   "scripts": {
-    "dev": "ts-node  src//index.ts",
     "build": "tsc && tsc-alias",
     "prod": "node dist/index.js"
   }
