@@ -3,8 +3,8 @@ import {createInterface} from 'readline'
 import { initialize } from './cluster'
 
 (async ()=>{
-  const ITEMS_PER_PAGE = 100
-  const CLUSTER_SIZE = 99
+  const ITEMS_PER_PAGE = 1000
+  const CLUSTER_SIZE = 200
   const TASK_FILE = __dirname + '/background-task'
 
     async function* getAllPagedData(itemsPerPage:number) {
